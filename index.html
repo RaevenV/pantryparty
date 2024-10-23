@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pantry Party</title>
+    <link rel="stylesheet" href="./src/index.css">
+    <style>
+      ::-webkit-scrollbar {
+        width: 10px;
+        
+      }
+
+      /* Track */
+      ::-webkit-scrollbar-track {
+        background: #f1f1f1;
+      }
+
+      /* Handle */
+      ::-webkit-scrollbar-thumb {
+        background: #313131;
+      }
+
+      /* Handle on hover */
+      ::-webkit-scrollbar-thumb:hover {
+        background: #555;
+      }
+    </style>
+  </head>
+   <body style="min-height: 100vh ;overflow-x: hidden; background-color: rgb(248 250 252);margin: 0;padding: 0;">
+    <div style="min-height: 100vh;margin: 0;padding: 0;overflow-x: hidden; background-color: rgb(248 250 252);scroll-behavior: smooth;" id="root"></div>
+    <script type="module" src="./src/main.tsx"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/16.6.3/umd/react.production.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/16.6.3/umd/react-dom.production.min.js"></script>
+  </body>
+</html>
