@@ -55,13 +55,13 @@ export function FoodDetails() {
   };
 
   const ServingControl = () => (
-    <div className="flex flex-row w-full mt-2 items-center">
-      <label htmlFor="portion" className="mr-2">
+    <div className="flex flex-row w-full mt-2 items-center ">
+      <label htmlFor="portion" className="mr-2 text-[14px]">
         Servings:
       </label>
       <div
         id="portion"
-        className="w-full h-8 flex flex-row justify-between items-center text-darkGreen shadow-md"
+        className="w-[50%] h-8 flex flex-row justify-between items-center text-darkGreen shadow-md"
       >
         <button
           onClick={handleMinus}
@@ -86,21 +86,21 @@ export function FoodDetails() {
   );
 
   const FoodDetailsCard = () => (
-    <div className="menu-box w-full rounded-xl shadow-xl h-[200px] bg-mainGreen flex flex-row justify-between items-center px-4 py-4">
+    <div className="menu-box w-full rounded-xl shadow-xl h-[160px] bg-mainGreen flex flex-row justify-between items-center px-4 py-4">
       <img
         src={foodItem.data.picture}
         alt={foodItem.data.name}
-        className="w-[45%] h-full rounded-2xl object-cover"
+        className="w-[35%] h-full rounded-2xl object-cover"
       />
-      <div className="w-[52%] h-full px-2 text-white">
-        <div className="font-extrabold text-[20px] mb-4">
+      <div className="w-[60%] h-full px-2 text-white">
+        <div className="font-extrabold text-[16px] mb-4">
           {foodItem.data.name}
         </div>
-        <div className="flex flex-row w-full mt-2">
-          <b className="font-extrabold tracking-wide">Difficulty:</b>
+        <div className="flex flex-row w-full mt-2 text-[12px]">
+          <b className="font-extrabold tracking-wide ">Difficulty:</b>
           <div className="ml-2 font-medium">{foodItem.data.difficulty}</div>
         </div>
-        <div className="flex flex-row w-full mt-2 justify-start items-center">
+        <div className="flex flex-row w-full mt-2 justify-start items-center text-[12px]">
           <b className="font-extrabold tracking-wide">Duration:</b>
           <div className="ml-2 font-medium">{foodItem.data.cookTime}</div>
         </div>
