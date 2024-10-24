@@ -67,15 +67,15 @@ export function Home() {
           <img src="./profile.png" className="w-12 h-12 " alt="" />
         </div>
         <div className="mt-4 w-full h-20 flex flex-col justify-start items-start font-kanit">
-          <div className="text-[24px] font-extrabold text-darkGreen ">
+          <div className="text-[20px] font-extrabold text-darkGreen ">
             SEARCH YOUR NEXT
           </div>
-          <div className="text-[24px] font-extrabold text-darkGreen ">
+          <div className="text-[20px] font-extrabold text-darkGreen ">
             MEAL <b className="text-mainGreen italic">WITH US!</b>
           </div>
         </div>
 
-        <div className="mt-6 w-full h-auto flex flex-wrap flex-row justify-between items-start gap-y-4 transition-all ease-in-out duration-150">
+        <div className="mt-2 w-full h-auto flex flex-wrap flex-row justify-between items-start gap-y-4 transition-all ease-in-out duration-150">
           {filteredRecipes.map((item) => (
             <FoodCard key={item.id} item={item} onClick={handleCardClick} />
           ))}
