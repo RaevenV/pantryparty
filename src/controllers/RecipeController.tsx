@@ -30,7 +30,10 @@ export class RecipeController {
     return recipes.find((recipe) => recipe.id === id);
   }
 
-  static async searchRecipes(searchTerm: string, recipes: RecipeWithId[]): Promise<RecipeWithId[]> {
+  static async searchRecipes(
+    searchTerm: string,
+    recipes: RecipeWithId[]
+  ): Promise<RecipeWithId[]> {
     if (!searchTerm.trim()) return recipes;
     const lowerSearchTerm = searchTerm.toLowerCase();
 
@@ -41,6 +44,20 @@ export class RecipeController {
           ing.name.toLowerCase().includes(lowerSearchTerm)
         )
     );
+  }
+
+  static cacheDuration = 60 * 60 * 1000;
+
+  static clearCacheIfExpired(): void {
+    const cache = localStorage.getItem("recipes");
+    if (!cache) return;
+
+    const { timestamp } = JSON.parse(cache);
+    const isExpired = Date.now() - timestamp > this.cacheDuration;
+
+    if (isExpired) {
+      this.clearCache();
+    }
   }
 
   static clearCache(): void {
