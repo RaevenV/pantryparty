@@ -27,6 +27,8 @@ export interface Recipe {
   picture: string;
   difficulty: string;
   cookTime: string;
+  rating:number;
+  totalCompleted:number;
   ingredients: {
     name: string;
     unit: number;

@@ -45,20 +45,17 @@ export function Navbar2() {
 
   return (
     <>
-      <div
-        className="absolute top-0 w-full h-20 flex flex-row justify-between items-center px-6 bg-transparent"
-        
-      >
+      <div className="absolute top-0 w-full h-20 flex flex-row justify-between items-center px-6 bg-transparent">
         <img
           onClick={handleHomeClick}
           src="/logo2.png"
-          className="h-[40px] w-[60px] cursor-pointer"
+          className="h-[35px] w-[50px] sm:h-[40px] sm:w-[62px] cursor-pointer"
           alt="Logo"
         />
         <img
           id="menu"
           src={menu ? "/close2.png" : "/menu2.png"}
-          className="h-8 w-8 cursor-pointer"
+          className="h-6 w-6 sm:h-8 sm:w-8 cursor-pointer"
           onClick={handleMenuClick}
           alt={menu ? "Close menu" : "Open menu"}
         />

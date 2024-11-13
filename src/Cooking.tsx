@@ -8,6 +8,7 @@ import {
   Pause,
   RotateCcw,
   ChevronRight,
+  ChevronLeft,
   Volume2,
   VolumeX,
 } from "lucide-react";
@@ -113,6 +114,14 @@ const Cooking = () => {
     }
   };
 
+  const handlePreviousStep = () => {
+    if (currentStepIndex != 0) {
+      setCurrentStepIndex((prevIndex) => prevIndex-1);
+    } else {
+      setIsCompleted(true);
+    }
+  };
+
   const toggleMute = () => {
     setIsMuted(!isMuted);
     if (audioRef.current) {
@@ -140,7 +149,7 @@ const Cooking = () => {
         >
           <div className="text-white text-center">
             <h1 className="text-4xl font-bold mb-4">Cooking Complete!</h1>
-            <p className="text-2xl">Enjoy your meal!🥳</p>
+            <p className="text-2xl">Enjoy your meal! 🥳</p>
           </div>
         </div>
       </>
@@ -151,7 +160,7 @@ const Cooking = () => {
     <>
       <Navbar2 />
       <div
-        className="w-full min-h-screen flex flex-col items-center px-6 font-raleway pb-10 bg-darkGreen"
+        className="w-full min-h-screen flex flex-col items-center px-6  pb-10 bg-darkGreen font-kanit"
         style={{
           backgroundImage: `url(${Background})`,
           backgroundSize: "100% 100%",
@@ -159,30 +168,38 @@ const Cooking = () => {
           backgroundRepeat: "no-repeat",
         }}
       >
-        <div className="mt-20 flex flex-col items-center gap-8">
-          <div className="text-white text-center">
+        <div className="mt-24 flex flex-col items-center gap-8 ">
+          <div className="text-white text-center px-4 ">
             <h2 className="text-2xl font-semibold mb-2">
               Step {currentStepIndex + 1}
             </h2>
-            <p className="text-xl">{currentStep?.name}</p>
-            <p className="text-lg mt-2">
+            <p className="text-md">{currentStep?.name}</p>
+            <p className="text-lg mt-2 ">
               Duration: {currentStep?.time} minutes
             </p>
           </div>
 
-          <div className="w-64 h-64 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center border-4 border-white">
-            <div className="text-white text-5xl font-bold">
+          <div className="w-64 h-64 font-kanit rounded-full bg-white  flex items-center justify-center  backdrop-filter backdrop-blur-md bg-opacity-35">
+            <div className="text-white text-5xl font-medium">
               {String(minutes).padStart(2, "0")}:
               {String(seconds).padStart(2, "0")}
             </div>
           </div>
 
-          <div className="flex mt-6 gap-6 items-center">
+          <div className="flex mt-6 gap-6 items-center flex-wrap">
             <button
               onClick={handleReset}
               className="w-14 h-14 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center hover:bg-white/30 transition-colors"
             >
               <RotateCcw className="w-6 h-6 text-white" />
+            </button>
+
+            <button
+              onClick={handlePreviousStep}
+              disabled={currentStepIndex == 0}
+              className="w-14 h-14 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center hover:bg-white/30 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              <ChevronLeft className="w-6 h-6 text-white" />
             </button>
 
             <button

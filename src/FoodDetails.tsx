@@ -2,6 +2,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { Navbar } from "./components/Navbar";
 import { useState, useMemo } from "react";
 import { ingredients, RecipeWithId } from "./lib/types";
+import Footer from "./components/Footer";
 
 export function FoodDetails() {
   const navigate = useNavigate();
@@ -45,27 +46,22 @@ export function FoodDetails() {
   };
 
   const navigateStartCooking = () => {
-    navigate("/startCooking", {
+    navigate("/cooking", {
       state: {
         ...foodItem,
-        adjustedIngredients,
-        serving,
       },
     });
   };
 
   const ServingControl = () => (
-    <div className="flex flex-row w-full mt-2 items-center ">
-      <label htmlFor="portion" className="mr-2 text-[14px]">
-        Servings:
-      </label>
+    <div className="flex w-[45%] sm:w-[50%]  mt-2 items-center absolute bottom-0 right-0 h-10 sm:h-12 rounded-tl-md overflow-hidden shadow-emerald-500 shadow-xl">
       <div
         id="portion"
-        className="w-[50%] h-8 flex flex-row justify-between items-center text-darkGreen shadow-md"
+        className="w-full h-full flex flex-row justify-between items-center text-darkGreen shadow-md"
       >
         <button
           onClick={handleMinus}
-          className="w-[20%] bg-slate-100 h-full flex justify-center items-center rounded-l-md"
+          className="w-[20%] bg-slate-100 text-mainGreen h-full flex justify-center items-center "
         >
           -
         </button>
@@ -73,11 +69,11 @@ export function FoodDetails() {
           onChange={handleInputChange}
           value={serving}
           type="text"
-          className="px-2 py-1 w-[60%] text-center"
+          className="px-2 py-1 w-[60%] h-full text-center"
         />
         <button
           onClick={handlePlus}
-          className="w-[20%] bg-slate-100 h-full flex justify-center items-center rounded-r-md"
+          className="w-[20%] bg-slate-100 text-mainGreen h-full flex justify-center items-center "
         >
           +
         </button>
@@ -86,36 +82,45 @@ export function FoodDetails() {
   );
 
   const FoodDetailsCard = () => (
-    <div className="menu-box w-full rounded-xl shadow-xl h-[160px] bg-mainGreen flex flex-row justify-between items-center px-4 py-4">
-      <img
-        src={foodItem.data.picture}
-        alt={foodItem.data.name}
-        className="w-[35%] h-full rounded-2xl object-cover"
-      />
-      <div className="w-[60%] h-full px-2 text-white">
-        <div className="font-extrabold text-[16px] mb-4">
+    <div
+      className="menu-box w-full rounded-xl shadow-xl h-[250px] flex flex-col justify-end items-center overflow-hidden"
+      style={{
+        backgroundImage: `url(${foodItem.data.picture})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+      }}
+    >
+      <div className="relative w-full h-[40%] py-4 px-6 text-white bg-mainGreen rounded-xl  gap-y-2 flex flex-col justify-start items-start font-kanit">
+        <div className="font-medium text-[15px] sm:text-[17px]">
           {foodItem.data.name}
         </div>
-        <div className="flex flex-row w-full mt-2 text-[12px]">
-          <b className="font-extrabold tracking-wide ">Difficulty:</b>
+        <div className="flex flex-row w-full text-[12px] sm:text-[14px]">
+          <b className="font-medium tracking-wide ">Difficulty:</b>
           <div className="ml-2 font-medium">{foodItem.data.difficulty}</div>
         </div>
-        <div className="flex flex-row w-full mt-2 justify-start items-center text-[12px]">
-          <b className="font-extrabold tracking-wide">Duration:</b>
-          <div className="ml-2 font-medium">{foodItem.data.cookTime}</div>
+        <div className="  absolute top-4 right-6 flex flex-row justify-start items-center text-[10px] sm:text-[14px] font-medium">
+          {foodItem.data.cookTime}
         </div>
+
         <ServingControl />
       </div>
     </div>
   );
 
   const IngredientsList = () => (
-    <div className="text-cream font-bold rounded-lg w-full p-4 mb-6 mt-4 bg-mainGreen py-6">
-      <h3 className="text-2xl font-bold mb-4">Ingredients</h3>
-      <ul className="space-y-2">
+    <div className="gap-y-4 p-6 w-full h-auto flex flex-col justify-center items-center bg-mainGreen rounded-xl shadow-lg ">
+      <h3 className="w-full text-left text-white text-[25px] font-medium tracking-wider">
+        Ingredients
+      </h3>
+
+      <ul className="flex flex-col justify-start items-center w-full gap-y-2 rounded-xl bg-white px-4 py-4 bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-25">
         {adjustedIngredients.map((item, index) => (
-          <li key={index} className="flex items-center text-lg">
-            <span className="mr-2">•</span>
+          <li
+            key={index}
+            className="w-full text-left flex items-center text-[12px] sm:text-[15px] text-white font-normal"
+          >
+            <span className="mr-2 text-lg">•</span>
             {item.name} - {item.unit || ""} {item.unitType || ""}
           </li>
         ))}
@@ -127,27 +132,43 @@ export function FoodDetails() {
     <>
       <Navbar />
       <div
-        className="px-[5%] mx-auto pt-[100px] pb-20 font-raleway w-full min-h-screen flex flex-col justify-start items-center"
+        className="px-[5%] mx-auto pt-[100px] pb-16 font-kanit w-full min-h-screen flex flex-col justify-start items-center gap-y-4"
         style={{
-          backgroundImage: `url("/Background2.png")`,
+          backgroundImage: `url("/Background.png")`,
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
       >
         <FoodDetailsCard />
+        
         <IngredientsList />
 
-        <div className="flex justify-center items-center w-full h-24">
+        <div className="gap-y-4 p-6 w-full h-auto flex flex-col justify-center items-center bg-mainGreen rounded-xl shadow-lg">
+          <div className="w-full text-left text-white text-[25px] font-medium tracking-wider">
+            Cooking Steps
+          </div>
+          <div className="flex flex-col justify-start items-center w-full gap-y-2 rounded-xl bg-white px-4 py-4 bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-25">
+            {foodItem.data.cookingSteps.map((item, index) => (
+              <div
+                key={index}
+                className="w-full text-[12px] sm:text-[15px] flex justify-left items-center rounded-md text-white font-normal"
+              >
+                <span className="mr-2 text-lg">•</span>
+                {item.name}
+              </div>
+            ))}
+          </div>
+
           <button
             onClick={navigateStartCooking}
-            className="shadow-xl px-1 py-1 hover:scale-[1.02] h-[60%] w-[60%] bg-mainGreen transition-all ease-in duration-[200] cursor-pointer rounded-xl"
+            className="w-full h-12 bg-white mt-2 font-kanit font-medium rounded-md text-white hover:scale-[1.01] hover:bg-opacity-50  transition-all duration-150 ease-in-out bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-25"
           >
-            <div className=" backdrop-blur text-cream font-bold text-xl flex justify-center items-center w-full h-full border rounded-lg ">
-              Start Cooking
-            </div>
+            Start Cooking
           </button>
         </div>
       </div>
+
+      <Footer/>
     </>
   );
 }

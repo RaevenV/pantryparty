@@ -30,15 +30,10 @@ export class RecipeController {
     return recipes.find((recipe) => recipe.id === id);
   }
 
-  static async searchRecipes(searchTerm: string): Promise<RecipeWithId[]> {
-    const recipes = await this.getAllRecipes(); // This returns RecipeWithId[]
-
-    // Check if the search term is empty
-    if (!searchTerm.trim()) return recipes; // Return the full list if no search term
-
+  static async searchRecipes(searchTerm: string, recipes: RecipeWithId[]): Promise<RecipeWithId[]> {
+    if (!searchTerm.trim()) return recipes;
     const lowerSearchTerm = searchTerm.toLowerCase();
 
-    // Filter recipes based on name or ingredient name
     return recipes.filter(
       (recipe) =>
         recipe.data.name.toLowerCase().includes(lowerSearchTerm) ||

@@ -2,14 +2,16 @@ import { RecipeWithId } from "@/lib/types";
 import React, { createContext, useContext, useState, ReactNode } from "react";
 import { RecipeController } from "@/controllers/RecipeController";
 import { useCallback } from "react";
+import { useMemo } from "react";
 
 interface RecipeContextType {
   loading: boolean;
   error: string | null;
   recipes: RecipeWithId[];
   getAllRecipes: () => Promise<void>;
-  searchRecipes: (searchTerm: string) => Promise<void>;
+  searchRecipes: (searchTerm: string, recipes: RecipeWithId[]) => Promise<void>;
   filteredRecipes: RecipeWithId[];
+  getTrendingRecipe: RecipeWithId | null;
 }
 
 const RecipeContext = createContext<RecipeContextType | undefined>(undefined);
@@ -17,7 +19,7 @@ const RecipeContext = createContext<RecipeContextType | undefined>(undefined);
 export const RecipeProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
-  const [recipes, setRecipes] = useState<RecipeWithId[]>([]);
+  const [recipes] = useState<RecipeWithId[]>([]);
   const [filteredRecipes, setFilteredRecipes] = useState<RecipeWithId[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -25,10 +27,16 @@ export const RecipeProvider: React.FC<{ children: ReactNode }> = ({
   const getAllRecipes = useCallback(async () => {
     setLoading(true);
     setError(null);
+
     try {
-      const fetchedRecipes = await RecipeController.getAllRecipes();
-      setRecipes(fetchedRecipes);
-      setFilteredRecipes(fetchedRecipes); // Initialize filtered recipes with all recipes
+      if ("recipes" in localStorage) {
+        setFilteredRecipes(JSON.parse(
+          localStorage.getItem("recipes")!
+        ) as RecipeWithId[]);
+      }else{
+        setFilteredRecipes(await RecipeController.getAllRecipes());
+      }
+      
     } catch (err) {
       setError((err as Error).message);
     } finally {
@@ -36,14 +44,34 @@ export const RecipeProvider: React.FC<{ children: ReactNode }> = ({
     }
   }, []);
 
-  const searchRecipes = useCallback(async (searchTerm: string) => {
+  const searchRecipes = useCallback(async (searchTerm: string, recipes: RecipeWithId[],) => {
     try {
-      const results = await RecipeController.searchRecipes(searchTerm);
+      const results = await RecipeController.searchRecipes(searchTerm, recipes);
       setFilteredRecipes(results);
     } catch (err) {
       setError((err as Error).message);
     }
   }, []);
+
+  const getTrendingRecipe = useMemo(() => {
+    if (filteredRecipes.length === 0) return null;
+    return filteredRecipes.reduce(
+      (trendingRecipe: RecipeWithId | null, recipe: RecipeWithId) => {
+        if (
+          !trendingRecipe ||
+          recipe.data.totalCompleted > trendingRecipe.data.totalCompleted
+        ) {
+          return recipe;
+        } else if (
+          recipe.data.totalCompleted === trendingRecipe.data.totalCompleted
+        ) {
+          return recipe;
+        }
+        return trendingRecipe;
+      },
+      null
+    );
+  }, [filteredRecipes]);
 
   return (
     <RecipeContext.Provider
@@ -54,6 +82,7 @@ export const RecipeProvider: React.FC<{ children: ReactNode }> = ({
         filteredRecipes,
         getAllRecipes,
         searchRecipes,
+        getTrendingRecipe,
       }}
     >
       {children}
