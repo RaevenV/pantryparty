@@ -1,4 +1,4 @@
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { cookingSteps, RecipeWithId } from "./lib/types";
 import { useEffect, useMemo, useState, useRef } from "react";
 import { Navbar2 } from "./components/Navbar2";
@@ -20,6 +20,15 @@ const Cooking = () => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
   const [isCompleted, setIsCompleted] = useState(false);
+  const navigate = useNavigate();
+
+  const toggleBack = () => {
+    navigate(-1);
+  };
+
+  const toggleHome = () => {
+    navigate('/');
+  };
 
   useEffect(() => {
     audioRef.current = new Audio(
@@ -132,6 +141,8 @@ const Cooking = () => {
     }
   };
 
+  
+
   const currentStep = cookingSteps[currentStepIndex];
 
   if (isCompleted) {
@@ -139,7 +150,7 @@ const Cooking = () => {
       <>
         <Navbar2 />
         <div
-          className="w-full min-h-screen flex flex-col items-center justify-center px-6 font-raleway pb-20 bg-darkGreen"
+          className="w-full min-h-screen flex flex-col items-center justify-center px-6 font-raleway pb-20 bg-darkGreen "
           style={{
             backgroundImage: `url(${Background})`,
             backgroundSize: "100% 100%",
@@ -150,6 +161,14 @@ const Cooking = () => {
           <div className="text-white text-center">
             <h1 className="text-4xl font-bold mb-4">Cooking Complete!</h1>
             <p className="text-2xl">Enjoy your meal! 🥳</p>
+          </div>
+          <div className="absolute bottom-20 mt-8 flex justify-between items-center w-full  px-8">
+            <button
+              onClick={toggleHome}
+              className="w-full h-14 rounded-2xl bg-white/30 backdrop-blur-md flex items-center justify-center hover:bg-white/30 transition-colors text-white text-[20px]"
+            >
+              home
+            </button>
           </div>
         </div>
       </>
@@ -185,53 +204,63 @@ const Cooking = () => {
               {String(seconds).padStart(2, "0")}
             </div>
           </div>
+        </div>
 
-          <div className="flex mt-6 gap-6 items-center flex-wrap">
-            <button
-              onClick={handleReset}
-              className="w-14 h-14 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center hover:bg-white/30 transition-colors"
-            >
-              <RotateCcw className="w-6 h-6 text-white" />
-            </button>
+        <section className="mt-20 h-20 flex justify-between items-center w-full gap-x-3 px-2">
+          <button
+            onClick={handlePreviousStep}
+            disabled={currentStepIndex == 0}
+            className="w-1/3 h-full rounded-2xl bg-white/20 backdrop-blur-md flex items-center justify-center hover:bg-white/30 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            <ChevronLeft className="w-6 h-6 text-white" />
+          </button>
 
-            <button
-              onClick={handlePreviousStep}
-              disabled={currentStepIndex == 0}
-              className="w-14 h-14 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center hover:bg-white/30 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              <ChevronLeft className="w-6 h-6 text-white" />
-            </button>
+          <button
+            onClick={handlePlayPause}
+            className="w-1/2 h-full rounded-2xl bg-white/20 backdrop-blur-md flex items-center justify-center hover:bg-white/30 transition-colors"
+          >
+            {isRunning ? (
+              <Pause className="w-8 h-8 text-white" />
+            ) : (
+              <Play className="w-8 h-8 text-white" />
+            )}
+          </button>
 
-            <button
-              onClick={handlePlayPause}
-              className="w-16 h-16 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center hover:bg-white/30 transition-colors"
-            >
-              {isRunning ? (
-                <Pause className="w-8 h-8 text-white" />
-              ) : (
-                <Play className="w-8 h-8 text-white" />
-              )}
-            </button>
+          <button
+            onClick={handleNextStep}
+            disabled={currentStepIndex >= cookingSteps.length - 1}
+            className="w-1/3 h-full rounded-2xl bg-white/20 backdrop-blur-md flex items-center justify-center hover:bg-white/30 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            <ChevronRight className="w-6 h-6 text-white" />
+          </button>
+        </section>
+        <div className="mt-3 flex justify-between items-center w-full gap-x-3 px-2">
+          <button
+            onClick={handleReset}
+            className="w-1/2 h-14 rounded-2xl bg-white/20 backdrop-blur-md flex items-center justify-center hover:bg-white/30 transition-colors"
+          >
+            <RotateCcw className="w-6 h-6 text-white" />
+          </button>
 
-            <button
-              onClick={handleNextStep}
-              disabled={currentStepIndex >= cookingSteps.length - 1}
-              className="w-14 h-14 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center hover:bg-white/30 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              <ChevronRight className="w-6 h-6 text-white" />
-            </button>
+          <button
+            onClick={toggleMute}
+            className="w-1/2 h-14 rounded-2xl bg-white/20 backdrop-blur-md flex items-center justify-center hover:bg-white/30 transition-colors"
+          >
+            {isMuted ? (
+              <VolumeX className="w-6 h-6 text-white" />
+            ) : (
+              <Volume2 className="w-6 h-6 text-white" />
+            )}
+          </button>
+        </div>
 
-            <button
-              onClick={toggleMute}
-              className="w-14 h-14 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center hover:bg-white/30 transition-colors"
-            >
-              {isMuted ? (
-                <VolumeX className="w-6 h-6 text-white" />
-              ) : (
-                <Volume2 className="w-6 h-6 text-white" />
-              )}
-            </button>
-          </div>
+        <div className="mt-8 flex justify-between items-center w-full  px-2">
+          <button
+            onClick={toggleBack}
+            className="w-full h-14 rounded-2xl bg-white/20 backdrop-blur-md flex items-center justify-center hover:bg-white/30 transition-colors text-white"
+          >
+            back
+          </button>
         </div>
       </div>
     </>

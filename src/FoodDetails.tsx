@@ -8,6 +8,10 @@ export function FoodDetails() {
   const navigate = useNavigate();
   const location = useLocation();
 
+  const toggleBack = () => {
+    navigate(-1);
+  };
+
   const foodItem = useMemo(
     () => location.state as RecipeWithId,
     [location.state]
@@ -54,26 +58,26 @@ export function FoodDetails() {
   };
 
   const ServingControl = () => (
-    <div className="flex w-[45%] sm:w-[50%]  mt-2 items-center absolute bottom-0 right-0 h-10 sm:h-12 rounded-tl-md overflow-hidden shadow-emerald-500 shadow-xl">
+    <div className="flex flex-col w-full items-center h-16 rounded-xl overflow-hidden shadow-lg ">
       <div
         id="portion"
-        className="w-full h-full flex flex-row justify-between items-center text-darkGreen shadow-md"
+        className="w-full h-full flex flex-row justify-between items-center text-darkGreen shadow-md rounded-lg overflow-hidden"
       >
         <button
           onClick={handleMinus}
-          className="w-[20%] bg-slate-100 text-mainGreen h-full flex justify-center items-center "
+          className="w-[20%] bg-mainGreen text-[25px] text-white h-full flex justify-center items-center "
         >
           -
         </button>
         <input
           onChange={handleInputChange}
-          value={serving}
+          value={`${serving} portion${serving > 1 ? "s" : ""}`}
           type="text"
           className="px-2 py-1 w-[60%] h-full text-center"
         />
         <button
           onClick={handlePlus}
-          className="w-[20%] bg-slate-100 text-mainGreen h-full flex justify-center items-center "
+          className="w-[20%] bg-mainGreen text-[25px] text-white h-full flex justify-center items-center "
         >
           +
         </button>
@@ -103,7 +107,7 @@ export function FoodDetails() {
           {foodItem.data.cookTime}
         </div>
 
-        <ServingControl />
+        
       </div>
     </div>
   );
@@ -140,7 +144,7 @@ export function FoodDetails() {
         }}
       >
         <FoodDetailsCard />
-        
+        <ServingControl />
         <IngredientsList />
 
         <div className="gap-y-4 p-6 w-full h-auto flex flex-col justify-center items-center bg-mainGreen rounded-xl shadow-lg">
@@ -161,14 +165,22 @@ export function FoodDetails() {
 
           <button
             onClick={navigateStartCooking}
-            className="w-full h-12 bg-white mt-2 font-kanit font-medium rounded-md text-white hover:scale-[1.01] hover:bg-opacity-50  transition-all duration-150 ease-in-out bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-25"
+            className="w-full h-12 bg-white mt-2 font-kanit font-medium rounded-md text-white hover:scale-[1.01] hover:bg-opacity-30  transition-all duration-150 ease-in-out bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-25"
           >
             Start Cooking
           </button>
         </div>
+        <div className=" mt-2 flex justify-between items-center w-full">
+          <button
+            onClick={toggleBack}
+            className="w-full h-14 rounded-2xl bg-mainGreen backdrop-blur-md flex items-center justify-center hover:scale-[1.015] transition-all duration-100 ease-in text-white"
+          >
+            back
+          </button>
+        </div>
       </div>
 
-      <Footer/>
+      <Footer />
     </>
   );
 }

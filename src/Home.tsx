@@ -112,6 +112,7 @@ export function Home() {
                 </h3>
               </div>
             </section>
+            <hr className="w-full h-[0.8px] border-0 bg-mainGreen mb-2" />
           </>
         ) : null}
 
