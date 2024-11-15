@@ -1,8 +1,8 @@
 import { db } from "../../firebaseConfig";
 import { collection, writeBatch, doc } from "firebase/firestore";
-import { recipes } from "./types/recipeTypes";
+import { Recipe } from "./types/recipeTypes";
 
-export const BatchAddCookingSteps = async (steps: recipes[]) => {
+export const BatchAddCookingSteps = async (steps: Recipe[]) => {
   const batch = writeBatch(db);
 
   steps.forEach((step) => {
