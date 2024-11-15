@@ -1,4 +1,4 @@
-import { RecipeWithId } from "@/lib/types";
+import { RecipeWithId } from "@/lib/types/recipeTypes";
 interface FoodCardProps {
   item: RecipeWithId;
   onClick: (item: RecipeWithId) => void;
@@ -25,7 +25,9 @@ const FoodCard = ({ item, onClick }: FoodCardProps) => {
         <span className="block text-[12px] mt-1">{item.data.cookTime}</span>
         <span className="sm:absolute sm:bottom-4 sm:right-4 flex w-full h-20px justify-end items-center gap-x-1 sm:gap-x-2">
           <img src="./star.png" className="w-[20px]" alt="" />
-          <h1 className="font-medium font-kanit text-[16px]">{item.data.rating}</h1>
+          <h1 className="font-medium font-kanit text-[16px]">
+            {item.data.rating}
+          </h1>
         </span>
       </div>
     </div>

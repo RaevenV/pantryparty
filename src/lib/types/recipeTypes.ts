@@ -1,12 +1,3 @@
-export type recipes = {
-    id : string,
-    name: string,
-    picture: string | null,
-    difficulty: string,
-    cookTime: string,
-    ingredients: ingredients[],
-    cookingSteps : cookingSteps[]
-}
 
 
 export type ingredients = {

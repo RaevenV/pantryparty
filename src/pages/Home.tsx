@@ -1,23 +1,29 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Navbar } from "./components/Navbar";
-import FoodCard from "./components/FoodCard.tsx";
-import { useRecipeContext } from "./context/RecipeContext.tsx";
-import { RecipeWithId } from "./lib/types.ts";
-import Footer from "./components/Footer.tsx";
+import { Navbar } from "@/components/Navbar";
+import FoodCard from "@/components/FoodCard.tsx";
+import { useRecipeContext } from "@/context/RecipeContext.tsx";
+import { RecipeWithId } from "@/lib/types/recipeTypes.ts";
+import Footer from "@/components/Footer.tsx";
 import Background from "/Background.png";
 
 export function Home() {
   const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
-  const { loading, error, getAllRecipes, searchRecipes, filteredRecipes, getTrendingRecipe} =
-    useRecipeContext();
+  const {
+    loading,
+    error,
+    getAllRecipes,
+    searchRecipes,
+    filteredRecipes,
+    getTrendingRecipe,
+  } = useRecipeContext();
 
   useEffect(() => {
     const debounceTimeout = setTimeout(() => {
-      if(searchTerm!=""){
+      if (searchTerm != "") {
         searchRecipes(searchTerm, filteredRecipes);
-      }else{
+      } else {
         getAllRecipes();
       }
     }, 300);
@@ -25,7 +31,7 @@ export function Home() {
     return () => clearTimeout(debounceTimeout);
   }, [searchTerm, searchRecipes]);
 
-  const trending:RecipeWithId|null =   getTrendingRecipe;
+  const trending: RecipeWithId | null = getTrendingRecipe;
 
   if (loading) {
     return (
@@ -73,11 +79,9 @@ export function Home() {
             placeholder="search for recipes"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-[75%] sm:w-[85%] h-[60%] sm:h-[70%] bg-white rounded-xl px-4 focus:border-0 shadow-md placeholder-darkGreen focus:outline-none text-darkGreen font-bold text-[14px]"
+            className="w-full  h-[60%] sm:h-[70%] bg-white rounded-xl px-4 focus:border-0 shadow-md placeholder-darkGreen focus:outline-none text-darkGreen font-bold text-[14px]"
           />
-          <img src="./profile.png" className="w-10 h-10 " alt="" />
         </div>
-
         {searchTerm === "" ? (
           <>
             <div className="my-4 w-full h-auto flex flex-col justify-start items-start font-kanit">
@@ -88,7 +92,7 @@ export function Home() {
             </div>
 
             <section
-              className="relative h-52 w-full rounded-xl shadow-md overflow-hidden cursor-pointer hover:opacity-95 transition-opacity mb-4"
+              className="relative h-52 w-full rounded-xl shadow-md overflow-hidden cursor-pointer hover:opacity-95 transition-opacity "
               onClick={() => {
                 if (trending) {
                   handleCardClick(trending);
@@ -112,10 +116,9 @@ export function Home() {
                 </h3>
               </div>
             </section>
-            <hr className="w-full h-[0.8px] border-0 bg-mainGreen mb-2" />
+            <hr className="w-full h-[0.8px] border-0 bg-mainGreen my-4" />
           </>
         ) : null}
-
         {/* Display the fetch count
         <div className="mt-4 text-sm text-gray-500">
           Data fetched {fetchCount} {fetchCount === 1 ? "time" : "times"}
@@ -123,7 +126,6 @@ export function Home() {
         {/* <button onClick={handleBatchAdd} className="bg-red-500 text-white p-2 rounded">
           Add Cooking Step
         </button> */}
-
         <div className="mt-2 w-full h-auto flex flex-wrap flex-col  sm:flex-row justify-between items-start gap-y-4 transition-all ease-in-out duration-150">
           {filteredRecipes.map((item) => (
             <FoodCard key={item.id} item={item} onClick={handleCardClick} />

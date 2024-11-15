@@ -1,7 +1,9 @@
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../../firebaseConfig";
-import { Recipe } from "@/lib/types";
-import { RecipeWithId } from "@/lib/types";
+import { Recipe } from "@/lib/types/recipeTypes";
+import { RecipeWithId } from "@/lib/types/recipeTypes";
+
+//uda terlanjur pake controller + context, harusnya context aja tp males ganti
 
 export class RecipeController {
   static async getAllRecipes(): Promise<RecipeWithId[]> {

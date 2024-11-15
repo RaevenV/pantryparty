@@ -1,7 +1,7 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import { cookingSteps, RecipeWithId } from "./lib/types";
+import { cookingSteps, RecipeWithId } from "@/lib/types/recipeTypes";
 import { useEffect, useMemo, useState, useRef } from "react";
-import { Navbar2 } from "./components/Navbar2";
+import { Navbar2 } from "@/components/Navbar2";
 import { useTimer } from "react-timer-hook";
 import {
   Play,
@@ -27,7 +27,7 @@ const Cooking = () => {
   };
 
   const toggleHome = () => {
-    navigate('/');
+    navigate("/");
   };
 
   useEffect(() => {
@@ -125,7 +125,7 @@ const Cooking = () => {
 
   const handlePreviousStep = () => {
     if (currentStepIndex != 0) {
-      setCurrentStepIndex((prevIndex) => prevIndex-1);
+      setCurrentStepIndex((prevIndex) => prevIndex - 1);
     } else {
       setIsCompleted(true);
     }
@@ -140,8 +140,6 @@ const Cooking = () => {
       }
     }
   };
-
-  
 
   const currentStep = cookingSteps[currentStepIndex];
 

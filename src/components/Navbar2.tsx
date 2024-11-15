@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
 import gsap from "gsap";
 import { useNavigate } from "react-router-dom";
+import { useUser } from "@/context/UserContext";
 
 
 export function Navbar2() {
   const [menu, setMenu] = useState(false);
   const navigate = useNavigate();
+  const { signOut } = useUser();
 
   const handleMenuClick = () => {
     setMenu((prev) => !prev);
@@ -13,6 +15,13 @@ export function Navbar2() {
 
   const handleHomeClick = () => {
     navigate(`/`);
+  };
+  const handleSignOutClick = () => {
+    signOut();
+  };
+
+  const handleProfileClick = () => {
+    navigate(`/profile`);
   };
 
   useEffect(() => {
@@ -66,9 +75,10 @@ export function Navbar2() {
       >
         <div className="w-[80%] h-full bg-mainGreen rounded-xl flex justify-center items-center shadow-xl z-50">
           <div className="w-[90%] h-[92%]  px-6 py-8 rounded-md flex justify-start items-center flex-col gap-y-8 text-white font-raleway font-bold">
-            <a href="#">test</a>
-            <a href="#">test</a>
-            <a href="#">test</a>
+            <a className="cursor-pointer" onClick={handleProfileClick}>Profile</a>
+            <a className="cursor-pointer" onClick={handleSignOutClick}>
+              Sign Out
+            </a>
           </div>
         </div>
       </div>

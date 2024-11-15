@@ -1,8 +1,8 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import { Navbar } from "./components/Navbar";
+import { Navbar } from "@/components/Navbar";
 import { useState, useMemo } from "react";
-import { ingredients, RecipeWithId } from "./lib/types";
-import Footer from "./components/Footer";
+import { ingredients, RecipeWithId } from "@/lib/types/recipeTypes";
+import Footer from "@/components/Footer";
 
 export function FoodDetails() {
   const navigate = useNavigate();
@@ -106,8 +106,6 @@ export function FoodDetails() {
         <div className="  absolute top-4 right-6 flex flex-row justify-start items-center text-[10px] sm:text-[14px] font-medium">
           {foodItem.data.cookTime}
         </div>
-
-        
       </div>
     </div>
   );

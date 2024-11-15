@@ -1,4 +1,4 @@
-import { RecipeWithId } from "@/lib/types";
+import { RecipeWithId } from "@/lib/types/recipeTypes";
 import React, { createContext, useContext, useState, ReactNode } from "react";
 import { RecipeController } from "@/controllers/RecipeController";
 import { useCallback } from "react";
@@ -30,13 +30,12 @@ export const RecipeProvider: React.FC<{ children: ReactNode }> = ({
 
     try {
       if ("recipes" in localStorage) {
-        setFilteredRecipes(JSON.parse(
-          localStorage.getItem("recipes")!
-        ) as RecipeWithId[]);
-      }else{
+        setFilteredRecipes(
+          JSON.parse(localStorage.getItem("recipes")!) as RecipeWithId[]
+        );
+      } else {
         setFilteredRecipes(await RecipeController.getAllRecipes());
       }
-      
     } catch (err) {
       setError((err as Error).message);
     } finally {
@@ -44,14 +43,20 @@ export const RecipeProvider: React.FC<{ children: ReactNode }> = ({
     }
   }, []);
 
-  const searchRecipes = useCallback(async (searchTerm: string, recipes: RecipeWithId[],) => {
-    try {
-      const results = await RecipeController.searchRecipes(searchTerm, recipes);
-      setFilteredRecipes(results);
-    } catch (err) {
-      setError((err as Error).message);
-    }
-  }, []);
+  const searchRecipes = useCallback(
+    async (searchTerm: string, recipes: RecipeWithId[]) => {
+      try {
+        const results = await RecipeController.searchRecipes(
+          searchTerm,
+          recipes
+        );
+        setFilteredRecipes(results);
+      } catch (err) {
+        setError((err as Error).message);
+      }
+    },
+    []
+  );
 
   const getTrendingRecipe = useMemo(() => {
     if (filteredRecipes.length === 0) return null;
