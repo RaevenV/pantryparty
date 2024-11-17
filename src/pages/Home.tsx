@@ -86,7 +86,7 @@ export function Home() {
       <Navbar />
 
       <div
-        className="bg-cream w-full pt-[80px] min-h-screen flex flex-col justify-start items-center px-6 font-raleway pb-20"
+        className="bg-cream w-full pt-[80px] min-h-screen flex flex-col justify-start items-center px-6 font-raleway pb-20 transition-all duration-200"
         style={{
           backgroundImage: `url(${Background})`,
           backgroundSize: "cover",
@@ -141,7 +141,7 @@ export function Home() {
             </section>
 
             {/* categories */}
-            <section className="mt-4 w-full gap-2 flex flex-wrap justify-between items-center">
+            <section className="mt-4 w-full gap-1  sm:gap-2 flex flex-wrap justify-between items-center">
               <button
                 onClick={() => handleCategoryClick("Asian")}
                 className="hover:bg-slate-200 transition-all duration-150 font-kanit font-medium text-[14px] flex justify-center items-center w-[49%] h-14 bg-white shadow-lg rounded-lg border-[3px] border-darkGreen"
@@ -150,7 +150,7 @@ export function Home() {
               </button>
               <button
                 onClick={() => handleCategoryClick("Chicken / Beef")}
-                className="hover:bg-slate-200 transition-all duration-150 font-kanit font-medium text-[14px] flex justify-center items-center w-[49%] h-14 bg-white shadow-lg rounded-lg border-[3px] border-darkGreen"
+                className="hover:bg-slate-200 transition-all duration-150 font-kanit font-medium text-[12px] sm:text-[14px] flex justify-center items-center w-[49%] h-14 bg-white shadow-lg rounded-lg border-[3px] border-darkGreen"
               >
                 Chicken & Beef 🥩🍗
               </button>
