@@ -12,6 +12,7 @@ interface RecipeContextType {
   searchRecipes: (searchTerm: string, recipes: RecipeWithId[]) => Promise<void>;
   filteredRecipes: RecipeWithId[];
   getTrendingRecipe: RecipeWithId | null;
+  searchRecipesByCategory: (category: string, recipes: RecipeWithId[]) => Promise<void>;
 }
 
 const RecipeContext = createContext<RecipeContextType | undefined>(undefined);
@@ -58,6 +59,21 @@ export const RecipeProvider: React.FC<{ children: ReactNode }> = ({
     []
   );
 
+  const searchRecipesByCategory = useCallback(
+    async (category: string, recipes: RecipeWithId[]) => {
+      try {
+        const results = await RecipeController.searchRecipesByCategory(
+          category,
+          recipes
+        );
+        setFilteredRecipes(results);
+      } catch (err) {
+        setError((err as Error).message);
+      }
+    },
+    []
+  );
+
   const getTrendingRecipe = useMemo(() => {
     if (filteredRecipes.length === 0) return null;
     return filteredRecipes.reduce(
@@ -88,6 +104,7 @@ export const RecipeProvider: React.FC<{ children: ReactNode }> = ({
         getAllRecipes,
         searchRecipes,
         getTrendingRecipe,
+        searchRecipesByCategory
       }}
     >
       {children}

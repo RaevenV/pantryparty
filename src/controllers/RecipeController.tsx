@@ -48,6 +48,32 @@ export class RecipeController {
     );
   }
 
+  static async searchRecipesByCategory(
+    category: string,
+    recipes: RecipeWithId[]
+  ): Promise<RecipeWithId[]> {
+    try {
+      if (!category.trim()) return recipes;
+
+      console.log("Filtering by category:", category);
+      const lowerCategory = category.toLowerCase();
+
+      return recipes.filter((recipe) => {
+        if (!recipe.data || !Array.isArray(recipe.data.category)) {
+          return false;
+        }
+
+        return recipe.data.category.some(
+          (cat) =>
+            typeof cat === "string" && cat.toLowerCase().includes(lowerCategory)
+        );
+      });
+    } catch (err) {
+      console.error("Error in searchRecipesByCategory:", err);
+      throw err;
+    }
+  }
+
   static cacheDuration = 60 * 60 * 1000;
 
   static clearCacheIfExpired(): void {

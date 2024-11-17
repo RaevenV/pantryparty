@@ -7,7 +7,7 @@ interface FoodCardProps {
 const FoodCard = ({ item, onClick }: FoodCardProps) => {
   return (
     <div
-      className="relative overflow-hidden w-full sm:w-[48%]  h-[200px] sm:min-h-[350px] bg-white rounded-xl   hover:scale-[1.015] shadow-md transition-all ease-in-out duration-200 flex flex-col items-center justify-between cursor-pointer"
+      className="relative overflow-hidden border-[3px] border-darkGreen w-full sm:w-[49%]  h-[200px] sm:min-h-[350px] bg-white rounded-xl   hover:scale-[1.015] shadow-md transition-all ease-in-out duration-200 flex flex-col items-center justify-between cursor-pointer"
       onClick={() => onClick(item)}
     >
       <img

@@ -13,6 +13,7 @@ import {
   VolumeX,
 } from "lucide-react";
 import Background from "/background3.png";
+import { useUser } from "@/context/UserContext";
 
 const Cooking = () => {
   const location = useLocation();
@@ -21,6 +22,7 @@ const Cooking = () => {
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
   const [isCompleted, setIsCompleted] = useState(false);
   const navigate = useNavigate();
+  const { userData } = useUser();
 
   const toggleBack = () => {
     navigate(-1);
@@ -43,6 +45,17 @@ const Cooking = () => {
       }
     };
   }, []);
+
+  useEffect(() => {
+    if (isCompleted && userData) {
+      userData.completedRecipes?.push(foodItem);
+      if (typeof userData.weeklyCompleted === "number") {
+        userData.weeklyCompleted += 1;
+      } else {
+        userData.weeklyCompleted = 1; 
+      }
+    }
+  }, [isCompleted]);
 
   const foodItem = useMemo(
     () => location.state as RecipeWithId,
@@ -84,9 +97,9 @@ const Cooking = () => {
   });
 
   useEffect(() => {
-    if (currentStepIndex < cookingSteps.length - 1) {
+    if (currentStepIndex < cookingSteps.length) {
       const currentStep = cookingSteps[currentStepIndex];
-      let expiryTime = getExpiryTimestamp(currentStep.time || 1);
+      let expiryTime = getExpiryTimestamp(currentStep.time);
       restart(expiryTime, false);
 
       if (audioRef.current) {
@@ -140,6 +153,7 @@ const Cooking = () => {
       }
     }
   };
+  
 
   const currentStep = cookingSteps[currentStepIndex];
 
@@ -185,6 +199,8 @@ const Cooking = () => {
           backgroundRepeat: "no-repeat",
         }}
       >
+        
+
         <div className="mt-24 flex flex-col items-center gap-8 ">
           <div className="text-white text-center px-4 ">
             <h2 className="text-2xl font-semibold mb-2">

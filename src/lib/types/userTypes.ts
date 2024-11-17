@@ -7,6 +7,7 @@ export type UserData = {
   name: string;
   email: string;
   age: number;
+  phone: string;
   password: string;
   completedRecipes: RecipeWithId[];
   weeklyCompleted: number;
@@ -29,6 +30,7 @@ export interface SignInParams {
   provider?: string;
   age?: number;
   name?:string;
+  phone?:string;
 }
 
 
@@ -36,6 +38,4 @@ export interface SignInParams {
 // Prep Cook
 // Pantry Protégé
 // Kitchen Connoisseur
-// Culinary Crusader
-// Gourmet Guru
-// Pantry Party Legend
+// Michelin Awardee

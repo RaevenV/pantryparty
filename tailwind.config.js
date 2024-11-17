@@ -17,6 +17,7 @@ export default {
         cream: "#FAFAF0",
         darkGreen: "#256B4A",
         mainGreen: "#22A768",
+        white: "#f7f7f7",
       },
     },
   },

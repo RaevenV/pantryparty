@@ -31,6 +31,7 @@ export interface Recipe {
     time: number;
     isTimed: boolean;
   }[];
+  category: string[];
 }
 
 export interface RecipeWithId {

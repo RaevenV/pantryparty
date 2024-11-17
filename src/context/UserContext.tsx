@@ -11,12 +11,9 @@ import { auth, db } from "../../firebaseConfig";
 import { onAuthStateChanged, signOut as firebaseSignOut } from "firebase/auth";
 import {
   signInWithEmailAndPassword,
-  createUserWithEmailAndPassword
+  createUserWithEmailAndPassword,
 } from "firebase/auth";
 import { UserData, UserContextType, SignInParams } from "@/lib/types/userTypes";
-
-
-
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
 
@@ -28,7 +25,13 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  //buat check pas dia balik ke page ini after refresh, udah ada data blom
   useEffect(() => {
+    const savedUserData = localStorage.getItem("userData");
+    if (savedUserData) {
+      setUserData(JSON.parse(savedUserData));
+    }
+
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       setLoading(true);
       setFirebaseUser(user);
@@ -39,7 +42,9 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
           const userDoc = await getDoc(userDocRef);
 
           if (userDoc.exists()) {
-            setUserData(userDoc.data() as UserData);
+            const data = userDoc.data() as UserData;
+            setUserData(data);
+            localStorage.setItem("userData", JSON.stringify(data)); // Save data to local storage
           }
         } catch (err) {
           setError(
@@ -48,14 +53,45 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
         }
       } else {
         setUserData(null);
+        localStorage.removeItem("userData");
       }
 
       setLoading(false);
-
       setError(null);
     });
 
     return unsubscribe;
+  }, []);
+
+  //buat auto logout abis sehari
+  useEffect(() => {
+    const checkInactivity = () => {
+      const lastActive = localStorage.getItem("lastActive");
+      if (lastActive) {
+        const lastActiveTime = new Date(lastActive).getTime();
+        const now = new Date().getTime();
+
+        if (now - lastActiveTime > 86400000) {
+          signOut();
+          localStorage.removeItem("lastActive");
+          localStorage.removeItem("userData");
+        }
+      }
+    };
+
+    checkInactivity();
+
+    const handleActivity = () => {
+      localStorage.setItem("lastActive", new Date().toISOString());
+    };
+
+    window.addEventListener("mousemove", handleActivity);
+    window.addEventListener("keydown", handleActivity);
+
+    return () => {
+      window.removeEventListener("mousemove", handleActivity);
+      window.removeEventListener("keydown", handleActivity);
+    };
   }, []);
 
   const createUserData = async (
@@ -67,6 +103,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
       name: params.name || "anonymous",
       email: firebaseUser.email || "",
       age: params.age || 0,
+      phone: params.phone || "",
       password: "",
       completedRecipes: [],
       weeklyCompleted: 0,
@@ -112,7 +149,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
       if (error instanceof Error) {
         setError(error.message);
       }
-      throw error; 
+      throw error;
     }
   };
 
@@ -159,7 +196,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
         error,
         signIn,
         signOut,
-        register
+        register,
       }}
     >
       {children}
