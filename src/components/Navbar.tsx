@@ -55,7 +55,7 @@ export function Navbar() {
 
   return (
     <>
-      <div className="absolute top-0 w-full h-20 flex flex-row justify-between items-center px-6 bg-transparent">
+      <div className="absolute top-0 w-full h-20 flex flex-row justify-between items-center px-6 bg-transparent z-10">
         <img
           onClick={handleHomeClick}
           src="/logo.png"
