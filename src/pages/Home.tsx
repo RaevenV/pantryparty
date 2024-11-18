@@ -89,7 +89,7 @@ export function Home() {
         className="bg-cream w-full pt-[80px] min-h-screen flex flex-col justify-start items-center px-6 font-raleway pb-20 transition-all duration-200"
         style={{
           backgroundImage: `url(${Background})`,
-          backgroundSize: "cover",
+          backgroundSize: "505px 100%",
           backgroundPosition: "center",
           backgroundRepeat: "no-repeat",
           backgroundAttachment: "fixed",
