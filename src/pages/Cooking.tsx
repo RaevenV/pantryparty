@@ -3,6 +3,7 @@ import { cookingSteps, RecipeWithId } from "@/lib/types/recipeTypes";
 import { useEffect, useMemo, useState, useRef } from "react";
 import { Navbar2 } from "@/components/Navbar2";
 import { useTimer } from "react-timer-hook";
+import { db } from "../../firebaseConfig";
 import {
   Play,
   Pause,
@@ -14,6 +15,8 @@ import {
 } from "lucide-react";
 import Background from "/background3.png";
 import { useUser } from "@/context/UserContext";
+import { doc, updateDoc, arrayUnion, increment } from "firebase/firestore";
+
 
 const Cooking = () => {
   const location = useLocation();
@@ -26,6 +29,10 @@ const Cooking = () => {
 
   const toggleBack = () => {
     navigate(-1);
+  };
+
+  const toggleComplete = () => {
+    setIsCompleted(true);
   };
 
   const toggleHome = () => {
@@ -47,15 +54,25 @@ const Cooking = () => {
   }, []);
 
   useEffect(() => {
-    if (isCompleted && userData) {
-      userData.completedRecipes?.push(foodItem);
-      if (typeof userData.weeklyCompleted === "number") {
-        userData.weeklyCompleted += 1;
-      } else {
-        userData.weeklyCompleted = 1; 
+    const updateFirestore = async () => {
+      if (isCompleted && userData) {
+        try {
+          const userDocRef = doc(db, "users", userData.id);
+
+          await updateDoc(userDocRef, {
+            completedRecipes: arrayUnion(foodItem),
+            weeklyCompleted: increment(1),
+          });
+
+          console.log("Recipe marked as completed and updated in Firestore!");
+        } catch (error) {
+          console.error("Error updating Firestore:", error);
+        }
       }
-    }
-  }, [isCompleted]);
+    };
+
+    updateFirestore();
+  }, [isCompleted, userData]);
 
   const foodItem = useMemo(
     () => location.state as RecipeWithId,
@@ -199,8 +216,6 @@ const Cooking = () => {
           backgroundRepeat: "no-repeat",
         }}
       >
-        
-
         <div className="mt-24 flex flex-col items-center gap-8 ">
           <div className="text-white text-center px-4 ">
             <h2 className="text-2xl font-semibold mb-2">
@@ -265,6 +280,15 @@ const Cooking = () => {
             ) : (
               <Volume2 className="w-6 h-6 text-white" />
             )}
+          </button>
+        </div>
+
+        <div className="mt-2 flex justify-between items-center w-full  px-2">
+          <button
+            onClick={toggleComplete}
+            className="w-full h-14 rounded-2xl bg-white/20 backdrop-blur-md flex items-center justify-center hover:bg-white/30 transition-colors text-white"
+          >
+            mark complete
           </button>
         </div>
 
