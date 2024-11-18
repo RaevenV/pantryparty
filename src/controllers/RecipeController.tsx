@@ -58,8 +58,9 @@ export class RecipeController {
       console.log("Filtering by category:", category);
       const lowerCategory = category.toLowerCase();
 
-      return recipes.filter((recipe) => {
+      const filteredRecipes = recipes.filter((recipe) => {
         if (!recipe.data || !Array.isArray(recipe.data.category)) {
+          console.warn("Invalid recipe structure:", recipe);
           return false;
         }
 
@@ -68,8 +69,14 @@ export class RecipeController {
             typeof cat === "string" && cat.toLowerCase().includes(lowerCategory)
         );
       });
+
+      console.log("Filtered recipes count:", filteredRecipes.length);
+      return filteredRecipes;
     } catch (err) {
-      console.error("Error in searchRecipesByCategory:", err);
+      console.error("Detailed error in searchRecipesByCategory:", {
+        message: err instanceof Error ? err.message : "Unknown error",
+        stack: err instanceof Error ? err.stack : "No stack trace",
+      });
       throw err;
     }
   }

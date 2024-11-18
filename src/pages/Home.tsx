@@ -73,7 +73,7 @@ export function Home() {
   const toggleBack = () => {
     setSearchTerm("");
     setCategoryTerm("");
-    navigate(-1);
+    navigate("/");
   };
 
 
