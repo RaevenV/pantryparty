@@ -59,11 +59,18 @@ export class RecipeController {
       const lowerCategory = category.toLowerCase();
 
       const filteredRecipes = recipes.filter((recipe) => {
-        
+        if (!recipe?.data?.category || !Array.isArray(recipe.data.category)) {
+          console.warn(
+            `Recipe with id ${recipe?.id} has invalid category data`
+          );
+          return false;
+        }
 
         return recipe.data.category.some(
           (cat) =>
-            typeof cat === "string" && cat.toLowerCase().includes(lowerCategory)
+            cat !== null &&
+            typeof cat === "string" &&
+            cat.toLowerCase().includes(lowerCategory)
         );
       });
 
