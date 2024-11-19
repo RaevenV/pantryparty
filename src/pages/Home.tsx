@@ -89,7 +89,7 @@ export function Home() {
         className="bg-cream w-full pt-[80px] min-h-screen flex flex-col justify-start items-center px-6 font-raleway pb-20 transition-all duration-200"
         style={{
           backgroundImage: `url(${Background})`,
-          backgroundSize: "505px 100%",
+          backgroundSize: "505px 110%",
           backgroundPosition: "center",
           backgroundRepeat: "no-repeat",
           backgroundAttachment: "fixed",
@@ -107,8 +107,8 @@ export function Home() {
         </div>
         {searchTerm === "" && categoryTerm === "" ? (
           <>
-            <div className="my-4 w-full h-auto flex flex-col justify-start items-start font-kanit">
-              <div className="text-[20px] font-extrabold text-darkGreen ">
+            <div className="mb-4 mt-2 w-full h-auto flex flex-col justify-start items-start font-kanit">
+              <div className="bg-white p-2 rounded-md text-[18px] font-extrabold text-darkGreen ">
                 Today's Featured{" "}
                 <b className="text-mainGreen font-bold italic"> Recipe!</b>
               </div>

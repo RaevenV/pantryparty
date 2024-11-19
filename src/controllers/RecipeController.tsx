@@ -59,10 +59,7 @@ export class RecipeController {
       const lowerCategory = category.toLowerCase();
 
       const filteredRecipes = recipes.filter((recipe) => {
-        if (!recipe.data || !Array.isArray(recipe.data.category)) {
-          console.warn("Invalid recipe structure:", recipe);
-          return false;
-        }
+        
 
         return recipe.data.category.some(
           (cat) =>
